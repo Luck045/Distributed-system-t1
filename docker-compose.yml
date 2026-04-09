@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  broker:
+    build: ./broker
+    ports:
+      - "5555:5555"
+      - "5556:5556"
+      - "5557:5557"
+
+  worker:
+    build: ./worker
+    depends_on:
+      - broker
+    deploy:
+      replicas: 3
+
+  client:
+    build: ./client
+    depends_on:
+      - broker
+
+  monitor:
+    build: ./monitor
+    depends_on:
+      - broker
